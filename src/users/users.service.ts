@@ -30,6 +30,7 @@ export class UserService {
     // check new user
     try {
       const exists = await this.users.findOne({ email });
+      console.log(exists);
       if (exists) {
         return { ok: false, error: 'There is a user with that email already' };
       }
@@ -79,25 +80,22 @@ export class UserService {
     } catch (error) {
       return {
         ok: false,
-        error,
+        error: "Can't log user in",
       };
     }
   }
 
   async findById(id: number): Promise<UserProfileOutput> {
     try {
-      const user = await this.users.findOne({ id });
-      if (user) {
-        return {
-          ok: true,
-          user,
-        };
-      }
-      return { ok: false, error: 'User Not Found' };
+      const user = await this.users.findOneOrFail({ id });
+      return {
+        ok: true,
+        user,
+      };
     } catch (error) {
       return {
-        error,
         ok: false,
+        error: 'User Not Found',
       };
     }
   }
@@ -111,6 +109,7 @@ export class UserService {
       if (email) {
         user.email = email;
         user.verified = false;
+        this.verifications.delete({ user: { id: user.id } });
         const verification = await this.verifications.save(
           this.verifications.create({ user }),
         );
@@ -144,9 +143,9 @@ export class UserService {
         await this.verifications.delete(verification.id);
         return { ok: true };
       }
-      return { ok: false, error: 'Verification not found' };
+      return { ok: false, error: 'Verification not found.' };
     } catch (error) {
-      return { ok: false, error };
+      return { ok: false, error: 'Could not verify email.' };
     }
   }
 }
