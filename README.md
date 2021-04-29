@@ -1,19 +1,6 @@
 # Nuber Eats Backend
 
-## User Model:
+[노마드 코더 우버 이츠 클론 코딩](https://nomadcoders.co/nuber-eats/lobby) 강의를 바탕으로 개발한 Backend Repository 입니다.
 
-- id
-- createdAt
-- updateAt
-
-- email
-- password
-- role(client|owner|delivery)
-
-## User CRUD:
-
-- Create Account
-- Log In
-- See Profile
-- Edit Profile
-- Verify Email
+## 기술스택
+`Typescript, NestJs, GraphQL, Postgres`
